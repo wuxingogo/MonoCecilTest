@@ -6,6 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/// <summary>
+///  Inject my dll "WuxingogoEditor"
+/// </summary>
 namespace CecilTest
 {
     class Program
@@ -26,7 +29,7 @@ namespace CecilTest
                         {
                             foreach( Instruction inst in method.Body.Instructions )
                             {
-                                if( inst.OpCode.Name == "ldstr" && ( ( string )inst.Operand ).Contains( "Value" )) //如果发现操作数包含, Value! ===>改为"SB Value!";
+                                if( inst.OpCode.Name == "ldstr" && ( ( string )inst.Operand ).Contains( "Value" )) // if find string contain"Value" ===>change to "Hello Value!";
                                 {
                                     inst.Operand = "Hello Value";
                                 }
@@ -43,18 +46,21 @@ namespace CecilTest
                             worker.InsertBefore( ins, worker.Create( OpCodes.Ldstr, "Method finish…" ) );
                             worker.InsertBefore( ins, worker.Create( OpCodes.Call,
                                 assembiy.MainModule.Import( typeof( Console ).GetMethod( "WriteLine", new Type[] { typeof( string ) } ) ) ) );
+                            // SaveAssembly is obsolete
                             module.Write( "IL.dll" );
                             break;
                         }
                     }
+                    // SaveAssembly is obsolete
                     //AssemblyFactory.SaveAssembly( assembiy, "IL_" + args[0] );
-                
-                    
-                }
-            
-        }
-            Console.Read();
 
+
+                }
+
+            }
+           
+
+            // print all type
 
             //foreach( TypeDefinition type in module.Types )
             //{
@@ -63,7 +69,7 @@ namespace CecilTest
 
             //    Console.WriteLine( type.FullName );
             //}
-            //Console.Read();
+            Console.Read();
         }
     }
 }
